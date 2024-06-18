@@ -2,6 +2,7 @@ package com.sparta.restapipractice.controller;
 
 import com.sparta.restapipractice.dto.ExamRequestDto;
 import com.sparta.restapipractice.dto.StudentRequestDto;
+import com.sparta.restapipractice.dto.StudentResponseDto;
 import com.sparta.restapipractice.entity.Exam;
 import com.sparta.restapipractice.entity.Student;
 import com.sparta.restapipractice.repository.StudentRepository;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.annotation.RequestScope;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/students")
@@ -49,9 +51,12 @@ public class StudentController {
     // (GET) /students
     // (GET) /students?number=
     @GetMapping
-    public ResponseEntity<?> getAllStudents() {
+    public ResponseEntity<List<StudentResponseDto>> getAllStudents() {
 
         List<Student> studentList = studentRepository.findAll();
-        return ResponseEntity.status(HttpStatus.OK).body(studentList);
+
+        List<StudentResponseDto> responseDtoList = studentList.stream().map(StudentResponseDto::new).collect(Collectors.toList());
+
+        return ResponseEntity.status(HttpStatus.OK).body(responseDtoList);
     }
 }

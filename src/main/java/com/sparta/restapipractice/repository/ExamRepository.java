@@ -8,4 +8,5 @@ import java.util.List;
 
 public interface ExamRepository extends JpaRepository<Exam, Long> {
     List<Exam> findByStudentIdAndType(Long studentId, ExamRequestDto.Type type);
+    List<Exam> findByStudentId(Long studentId);
 }

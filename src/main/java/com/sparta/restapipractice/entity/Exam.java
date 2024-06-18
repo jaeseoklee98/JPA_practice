@@ -45,5 +45,7 @@ public class Exam {
         examCreated();
     }
 
-    public void examCreated() {this.examdate = LocalDateTime.now();}
+    public void examCreated() {
+        this.examdate = LocalDateTime.now();
+    }
 }
