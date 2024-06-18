@@ -8,6 +8,8 @@ import com.sparta.restapipractice.repository.StudentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class ExamService {
@@ -27,19 +29,7 @@ public class ExamService {
         examRepository.save(exam);
     }
 
-    public Exam findById(Long id) {
-        Exam exam = findByExamId(id);
-
-        return new Exam(
-                exam.getId(),
-                exam.getStudent_id(),
-                exam.getScore(),
-                exam.getType()
-        );
-    }
-
-    public Exam findByExamId(Long id) {
-        return examRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("해당 시험이 존재하지 않습니다."));
+    public List<Exam> findExamsByStudentIdAndType(Long studentId, ExamRequestDto.Type type) {
+        return examRepository.findByStudentIdAndType(studentId, type);
     }
 }

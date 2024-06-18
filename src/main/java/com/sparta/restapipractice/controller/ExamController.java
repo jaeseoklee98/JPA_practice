@@ -33,19 +33,20 @@ public class ExamController {
         return ResponseEntity.status(HttpStatus.CREATED).body("과목 등록이 완료되었습니다.");
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<ExamResponseDto> getexam(@PathVariable(name = "id") Long id) {
-        Exam exam = examService.findById(id);
-
-        ExamResponseDto responseDto = new ExamResponseDto(exam);
-
-        return ResponseEntity.status(HttpStatus.OK).body(responseDto);
-    }
-
     @GetMapping
     public ResponseEntity<List<ExamResponseDto>> getAllexam() {
         List<Exam> examList = examRepository.findAll();
         List<ExamResponseDto> responseDtoList = examList.stream().map(ExamResponseDto::new).collect(Collectors.toList());
+        return ResponseEntity.status(HttpStatus.OK).body(responseDtoList);
+    }
+
+    @GetMapping("/type/{type}")
+    public ResponseEntity<List<ExamResponseDto>> getExamsByStudentIdAndType(@PathVariable(name = "student_id") Long studentId,
+                                                                            @PathVariable(name = "type") ExamRequestDto.Type type) {
+        List<Exam> examList = examService.findExamsByStudentIdAndType(studentId, type);
+        List<ExamResponseDto> responseDtoList = examList.stream()
+                .map(ExamResponseDto::new)
+                .collect(Collectors.toList());
         return ResponseEntity.status(HttpStatus.OK).body(responseDtoList);
     }
 }
