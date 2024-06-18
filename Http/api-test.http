@@ -1,0 +1,30 @@
+### 학생1 등록 테스트
+POST http://localhost:8080/students
+Content-Type: application/json
+
+{
+  "id": 1,
+  "studentNumber": "20182112",
+  "name": "이재석",
+  "email": "jsee2367@gmail.com"
+}
+
+### 학생2등록 테스트
+POST http://localhost:8080/students
+Content-Type: application/json
+
+{
+  "id": 2,
+  "studentNumber": "20182114",
+  "name": "이재석2",
+  "email": "jsee12567@gmail.com"
+}
+
+### 학생 조회 테스트
+GET http://localhost:8080/students/1
+
+### 학생 전체 조회 테스트
+GET http://localhost:8080/students
+
+### 학번에 해당하는 학생 조회 테스트
+GET http://localhost:8080/students?number=20182114
