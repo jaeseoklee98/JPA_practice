@@ -1,27 +1,51 @@
 package com.sparta.restapipractice.controller;
 
 import com.sparta.restapipractice.dto.ExamRequestDto;
+import com.sparta.restapipractice.dto.ExamResponseDto;
+import com.sparta.restapipractice.entity.Exam;
+import com.sparta.restapipractice.repository.ExamRepository;
 import com.sparta.restapipractice.service.ExamService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 
 @RestController
-@RequestMapping("/students/{id}/exams")
+@RequestMapping("/students/{student_id}/exams")
 public class ExamController {
 
     private final ExamService examService;
+    private final ExamRepository examRepository;
 
-    public ExamController(ExamService examService) {
+    public ExamController(ExamService examService, ExamRepository examRepository) {
         this.examService = examService;
+        this.examRepository = examRepository;
     }
 
 
     @PostMapping
-    public ResponseEntity<?> addexam(@PathVariable(name = "id") Long student_id, @RequestBody ExamRequestDto requestDto) {
+    public ResponseEntity<?> addexam(@PathVariable(name = "student_id") Long student_id, @RequestBody ExamRequestDto requestDto) {
         examService.add(student_id,requestDto);
 
         return ResponseEntity.status(HttpStatus.CREATED).body("과목 등록이 완료되었습니다.");
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ExamResponseDto> getexam(@PathVariable(name = "id") Long id) {
+        Exam exam = examService.findById(id);
+
+        ExamResponseDto responseDto = new ExamResponseDto(exam);
+
+        return ResponseEntity.status(HttpStatus.OK).body(responseDto);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<ExamResponseDto>> getAllexam() {
+        List<Exam> examList = examRepository.findAll();
+        List<ExamResponseDto> responseDtoList = examList.stream().map(ExamResponseDto::new).collect(Collectors.toList());
+        return ResponseEntity.status(HttpStatus.OK).body(responseDtoList);
     }
 }

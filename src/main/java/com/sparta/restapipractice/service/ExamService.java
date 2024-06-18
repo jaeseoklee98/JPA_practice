@@ -27,4 +27,19 @@ public class ExamService {
         examRepository.save(exam);
     }
 
+    public Exam findById(Long id) {
+        Exam exam = findByExamId(id);
+
+        return new Exam(
+                exam.getId(),
+                exam.getStudent_id(),
+                exam.getScore(),
+                exam.getType()
+        );
+    }
+
+    public Exam findByExamId(Long id) {
+        return examRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("해당 시험이 존재하지 않습니다."));
+    }
 }
