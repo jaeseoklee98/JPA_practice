@@ -20,7 +20,7 @@ public class ExamRequestDto {
     private Type type;
 
     public enum Type{
-        Jpa, DB;
+        JPA, DB;
 
         @JsonCreator
         public static Type fromString(String key) {

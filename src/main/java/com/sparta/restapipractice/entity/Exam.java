@@ -5,12 +5,14 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 
 @Getter
 @Entity
 @NoArgsConstructor
+@EntityListeners(AuditingEntityListener.class)
 public class Exam {
 
     @Id
@@ -23,8 +25,8 @@ public class Exam {
     @Column
     private Float score;
 
-    @Column
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private ExamRequestDto.Type type;
 
     @CreatedDate
